@@ -69,6 +69,54 @@ When designing web applications, it often makes sense conceptually and architect
 one instance of a particular class. The singleton pattern enables us to do this.
 
 **TODO: NEED NEW SINGLETON CODE EXAMPLE**
+{% highlight php %}
+
+class Singleton
+{
+    private static $instance = null;
+
+
+    /**
+     * private constructor cannot be called from outside of the class to prevent multiple instances. 
+     */
+    private function __construct()
+    {
+        //..
+    }
+
+    /**
+     * private clone is to prevent clone the instance from outside of the class.
+     */
+    private function __clone()
+    {
+        //..
+    }
+    
+    public function __wakeup()
+    {
+        throw new Exception("Singleton cannot be unserialized");
+    }
+
+    /**
+     * Obtain the instance by using Singleton::getInstance() to prevent multiple instances.
+     * @return Singleton object.
+     */
+    public static function getInstance(): Singleton
+    {
+        if(!isset(self::$instance))
+        {
+            self::$instance = new Singleton();
+        }
+        return self::$instance;
+    }
+    
+}
+
+// client
+$s = Singleton::getInstance();
+
+{% endhighlight %}
+
 
 The code above implements the singleton pattern using a [*static* variable](https://www.php.net/language.variables.scope#language.variables.scope.static) and the static creation method `getInstance()`.
 Note the following:
